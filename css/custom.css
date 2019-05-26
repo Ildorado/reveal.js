@@ -1,0 +1,29 @@
+.slide__1__2__p {
+    font-size: 2em;
+}
+
+.slide__2__1__p {
+    font-size: 1.5em;
+}
+
+.slide__div {
+    display: flex;
+    flex-direction: row;
+}
+
+.verticalDiv {
+    display: flex;
+    flex-direction: column;
+}
+.FullWidthImg{
+    width:100%;
+}
+
+.slide__div__img {
+    width: 50%;
+    height: 50%;
+}
+
+.slide__div__p {
+    font-size: 0.75em;
+}

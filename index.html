@@ -1,49 +1,352 @@
 <!doctype html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<link rel="stylesheet" href="css/reset.css">
-		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/black.css">
+  <title>reveal.js</title>
 
-		<!-- Theme used for syntax highlighting of code -->
-		<link rel="stylesheet" href="lib/css/monokai.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/reveal.css">
+  <link rel="stylesheet" href="css/theme/sky.css">
 
-		<!-- Printing and PDF exports -->
-		<script>
-			var link = document.createElement( 'link' );
-			link.rel = 'stylesheet';
-			link.type = 'text/css';
-			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
-			document.getElementsByTagName( 'head' )[0].appendChild( link );
-		</script>
-	</head>
-	<body>
-		<div class="reveal">
-			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
-			</div>
-		</div>
 
-		<script src="js/reveal.js"></script>
+  <!-- Theme used for syntax highlighting of code -->
+  <link rel="stylesheet" href="lib/css/monokai.css">
 
-		<script>
-			// More info about config & dependencies:
-			// - https://github.com/hakimel/reveal.js#configuration
-			// - https://github.com/hakimel/reveal.js#dependencies
-			Reveal.initialize({
-				dependencies: [
-					{ src: 'plugin/markdown/marked.js' },
-					{ src: 'plugin/markdown/markdown.js' },
-					{ src: 'plugin/notes/notes.js', async: true },
-					{ src: 'plugin/highlight/highlight.js', async: true }
-				]
-			});
-		</script>
-	</body>
+  <!-- Printing and PDF exports -->
+  <link rel="stylesheet" href="css/custom.css">
+  <script>
+    var link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+    document.getElementsByTagName('head')[0].appendChild(link);
+  </script>
+</head>
+
+<body>
+  <div class="reveal">
+    <div class="slides">
+      <section class="slides__1">
+        <section class="slide__1__1" data-background-image="/images/Zeichenfläche-1.png">
+        </section>
+        <section class="slide__1__2">
+          <p class="slide__1__2__p"> What is it exactly?</p>
+        </section>
+        <section class="slide__1__3">WebAssembly is a new type of code that can be run in modern web browsers
+          and provides new features and major gains in performance.
+          It is not primarily intended to be written by hand,
+          rather it is designed to be an effective compilation target for low-level source languages like C,
+          C++, Rust, etc.</section>
+      </section>
+      <section class="slide__2">
+        <section class="slide__2__1">
+          <img src="/images/efde2f06bc5d23c62c82b100f5939c00_f204.jpg" alt="question">
+          <p class="slide__2__1__p">Why we need it, isn't javascript good enough? To answer this question we need to
+            make out how javascript works.</p>
+        </section>
+        <section class="slide__2__2">
+          <div class="slide__div">
+            <img src="images/01-01-perf_graph05.png" class="slide__div__img" alt="perfomance graph">
+            <p class="slide__div__p">In 2008, a period that people call the performance wars began. Multiple
+              browsers added just-in-time
+              compilers, also called JITs. As JavaScript was running, the JIT could see patterns and make the code run
+              faster based on those patterns.
+
+              The introduction of these JITs led to an inflection point in the performance of JavaScript. Execution of
+              JS was 10x faster.</p>
+          </div>
+        </section>
+        <section class="slide__2__3">
+          <div class="slide__div">
+            <img src="images/02-04-jit02.png" class="slide__div__img" alt="JITS graph">
+            <p class="slide__div__p">To make JITs They added a new part to the JavaScript engine, called a
+              monitor.That monitor watches the code as it runs, and makes a note of how many times it is run and what
+              types are used.
+              At first, the monitor just runs everything through the interpreter.</p>
+          </div>
+        </section>
+        <section class="slide__2__4">
+          <div class="slide__div">
+            <img src="images/02-05-jit06.png" class="slide__div__img" alt="JITS graph">
+            <p class="slide__div__p">When a function starts getting warm(If the same lines of code are run a few
+              times), the JIT will send it off to be compiled.
+              Then it will store that compilation. If the monitor sees
+              that execution is hitting the same code again with the same variable types, it will just pull out its
+              compiled version. </p>
+          </div>
+        </section>
+        <section class="slide__2__5">
+          <div class="slide__div">
+            <img src="images/02-06-jit09.png" class="slide__div__img" alt="JITS graph">
+            <p class="slide__div__p">When a part of the code is very hot(if it runs a lot of times), the monitor
+              will send it off to the
+              optimizing compiler. This will create another, even faster, version of the function that will also be
+              stored.</p>
+          </div>
+        </section>
+        <section class="slide__2__6">
+          <div class="slide__div">
+            <p class="slide__div__p">In order to make a faster version of the code, the optimizing compiler has to
+              make some assumptions.
+              For example, if it can assume that all objects created by a particular constructor have the same
+              shape—that is, that they always have the same property names, and that those properties were added in the
+              same order— then it can cut some corners based on that.</p>
+          </div>
+        </section>
+        <section class="slide__2__7">
+          <div class="verticalDiv">
+            <p class="slide__div__p"> of course with JavaScript, there are never any guarantees. You could have 99
+              objects that all have the same shape, but then the 100th might be missing a property.
+              So the compiled code needs to check before it runs to see whether the assumptions are valid. If they are,
+              then the compiled code runs. But if not, the JIT assumes that it made the wrong assumptions and trashes
+              the optimized code.</p>
+            <img src="images/assumption.png" class="FullWidthImg" alt="assumption">
+          </div>
+        </section>
+        <section class="slide__2__8" style="font-size: 0.75em;">
+          <h1>Conclusion</h1>
+          <p class="slide__div__p">Even with these improvements, though, the performance of JavaScript can be
+            unpredictable. And to make things faster, the JIT has added some overhead during runtime, including:
+          </p>
+          <ul>
+            <li>optimization and deoptimization</li>
+            <li>memory used for the monitor’s bookkeeping and recovery information for when bailouts happen</li>
+            <li>memory used to store baseline and optimized versions of a function</li>
+          </ul>
+          <p class="slide__div__p">There’s room for improvement here: that overhead could be removed, making performance
+            more predictable. And that’s one of the things that WebAssembly does.
+          </p>
+        </section>
+      </section>
+      <section class="slide__3">
+        <section class="slide__3__1">
+          <p style="font-size:1.5em;">So, how WebAssembly works?</p>
+        </section>
+        <section class="slide__3__2">
+          <div class="slide__div">
+            <img src="images/04-02-langs08-768x501.png" class="slide__div__img" alt="WebAssembly work scheme">
+            <p class="slide__div__p"> WebAssembly instructions are sometimes called virtual instructions. They have a
+              much more direct mapping to machine code than JavaScript source code. They represent a sort of
+              intersection of what can be done efficiently across common popular hardware</p>
+          </div>
+        </section>
+        <section class="slide__3__3">
+          <p class="slide__div__p">The compiler tool chain that currently has the most support for WebAssembly is
+            called LLVM. There are a number of different front-ends and back-ends that can be plugged into LLVM.
+          </p>
+        </section>
+        <section class="slide__3__5">
+          <p>The quickest, most efficient way to fetch a wasm module is using the newer
+            WebAssembly.instantiateStreaming() method</p>
+          <pre><code data-trim data-noescape>
+              WebAssembly.instantiateStreaming(fetch('simple.wasm'), importObject)
+              .then(results => {
+                // Do something with the results!
+              });
+                    </code>
+            </pre>
+        </section>
+        <section class="slide__3__6">
+          <p>If we used the older WebAssembly.instantiate() method, which doesn't work on the direct stream, we'd need
+            an extra step of converting the fetched byte code to an ArrayBuffer, like so:
+          </p>
+          <pre><code data-trim data-noescape>
+              fetch('module.wasm').then(response =>
+              response.arrayBuffer()
+            ).then(bytes =>
+              WebAssembly.instantiate(bytes, importObject)
+            ).then(results => {
+              // Do something with the results!
+            });
+             </code>
+              </pre>
+        </section>
+        <section class="slide__3__7">
+          <p>Here’s a C function that we’ll turn into WebAssembly:
+          </p>
+          <pre><code data-trim data-noescape>
+              int add42(int num) {
+                return num + 42;
+              }
+               </code>
+          </pre>
+        </section>
+        <section data-markdown>
+          <textarea data-template>
+              You can try using the [WASM Explorer](http://mbebenita.github.io/WasmExplorer/) to compile this function.
+            </textarea>
+        </section>
+        <section class="slide__3__8">
+          <p>If you open up the .wasm file (and if your editor supports displaying it), you’ll see something like this.
+          </p>
+          <pre><code data-trim data-noescape>
+00 61 73 6D 0D 00 00 00 01 86 80 80 80 00 01 60
+01 7F 01 7F 03 82 80 80 80 00 01 00 04 84 80 80
+80 00 01 70 00 00 05 83 80 80 80 00 01 00 01 06
+81 80 80 80 00 00 07 96 80 80 80 00 02 06 6D 65
+6D 6F 72 79 02 00 09 5F 5A 35 61 64 64 34 32 69
+00 00 0A 8D 80 80 80 00 01 87 80 80 80 00 00 20
+00 41 2A 6A 0B
+               </code>
+                </pre>
+        </section>
+        <section class="slide__3__9">
+          <div class="slide__div">
+            <img class="slide__div__img" src="/images/04-06-hex_binary_asm01.png" alt="representation of code">
+            <p class="slide__div__p">
+              As you see, it can be easily converted to binary notation, or to a human readable format.
+            </p>
+          </div>
+        </section>
+        <section class="slide__3__10">
+          <div class="verticalDiv">
+            <img class="FullWidthImg" src="/images/04-07-hex_binary_asm02.png" alt="representation of code">
+            <p class="slide__div__p">
+              WebAssembly is an example of something called a stack machine. This means that all of the values an
+              operation needs are queued up on the stack before the operation is performed.
+            </p>
+          </div>
+        </section>
+      </section>
+      <section class="slide__4">
+        <section class="slide__4__1">
+          <p style="font-size:1.5em;">
+            What makes WebAssembly fast?
+          </p>
+        </section>
+        <section class="slide__4__2">
+          <p class="slide__div__p">Before we can understand the differences in performance between JavaScript and
+            WebAssembly, we need to
+            understand the work that the JS engine does.
+            This diagram gives a rough picture of what the start-up performance of an application might look like today.
+          </p>
+          <img src="images/05-01-diagram_now01.png" alt="JS perfomance graph">
+        </section>
+        <section class="slide__4__3">
+          <p class="slide__div__p">
+            In comparison this is how it looked like before JITs.
+          </p>
+          <img src="/images/05-02-diagram_past01.png" alt="JS perfomance graph">
+        </section>
+        <section class="slide__4__4">
+          <p class="slide__div__p">
+            Here’s an approximation of how WebAssembly would compare for a typical web application.
+          </p>
+          <img src="/images/05-03-diagram_future01.png" alt="JS perfomance graph">
+        </section>
+        <section class="slide__4__5">
+          <h1>Parsing</h1>
+          <p class="slide__div__p">
+            Once it reaches the browser, JavaScript source gets parsed into an Abstract Syntax Tree.
+          </p>
+          <p class="slide__div__p">
+            Browsers often do this lazily, only parsing what they really need to at first and just creating stubs for
+            functions which haven’t been called yet.
+          </p>
+          <p class="slide__div__p">
+            From there, the AST is converted to an intermediate representation (called bytecode) that is specific to
+            that JS engine.
+          </p>
+        </section>
+        <section class="slide__4__6">
+          <p class="slide__div__p">
+            In contrast, WebAssembly doesn’t need to go through this transformation because it is already an
+            intermediate representation. It just needs to be decoded and validated to make sure there aren’t any errors
+            in it.
+          </p>
+          <img src="/images/05-04-diagram_compare02-768x259.png" alt="comparison diagram">
+        </section>
+        <section class="slide__4__7">
+          <h1>Reoptimizing</h1>
+          <p class="slide__div__p">
+            Sometimes the JIT has to throw out an optimized version of the code and retry it.
+          </p>
+          <p class="slide__div__p">
+            This happens when assumptions that the JIT makes based on running code turn out to be incorrect.
+          </p>
+          <p class="slide__div__p">
+            There are two costs to deoptimization. First, it takes some time to bail out of the optimized code and go
+            back to the baseline version. Second, if that function is still being called a lot, the JIT may decide to
+            send it through the optimizing compiler again, so there’s the cost of compiling it a second time
+          </p>
+        </section>
+        <section class="slide__4__8">
+          <p class="slide__div__p">
+            In WebAssembly, things like types are explicit, so the JIT doesn’t need to make assumptions about types
+            based on data it gathers during runtime. This means it doesn’t have to go through reoptimization cycles.
+          </p>
+          <img src="/images/05-06-diagram_compare04.png" alt="comparison diagram">
+        </section>
+        <section class="slide__4__9">
+          <h1>Executing</h1>
+          <p class="slide__div__p">
+            It is possible to write JavaScript that executes performantly. To do it, you need to know about the
+            optimizations that the JIT makes.
+          </p>
+          <p class="slide__div__p">
+            However, most developers don’t know about JIT internals. Even for those developers who do know about JIT
+            internals, it can be hard to hit the sweet spot.
+          </p>
+          <p class="slide__div__p">
+            Plus, the optimizations a JIT uses are different between browsers, so coding to the internals of one browser
+            can make your code less performant in another.
+          </p>
+        </section>
+        <section class="slide__4__10">
+          <p class="slide__div__p">
+            Because of this, executing code in WebAssembly is generally faster. Many of the optimizations that JITs make
+            to JavaScript (such as type specialization) just aren’t necessary with WebAssembly.
+          </p>
+          <img src="/images/05-07-diagram_compare05-768x263.png" alt="comparison diagram">
+        </section>
+        <section class="slide__4__11">
+          <h1>Garbage collection
+          </h1>
+          <p class="slide__div__p">
+            In JavaScript, the developer doesn’t have to worry about clearing out old variables from memory when they
+            aren’t needed anymore. Instead, the JS engine does that automatically using something called a garbage
+            collector.
+          </p>
+          <p class="slide__div__p">
+            This can be a problem if you want predictable performance, though. You don’t control when the garbage
+            collector does its work, so it may come at an inconvenient time. Most browsers have gotten pretty good at
+            scheduling it, but it’s still overhead that can get in the way of your code’s execution.
+          </p>
+        </section>
+        <section class="slide__4__12">
+          <p class="slide__div__p">
+            WebAssembly does not support garbage collection at all. Memory is managed manually (as it is in languages
+            like C and C++). While this can make programming more difficult for the developer, it does also make
+            performance more consistent.
+          </p>
+          <img src="/images/05-08-diagram_compare06-768x314.png" alt="comparison diagram">
+        </section>
+        <section class="slide__4__13">
+          <p style="font-size:1.5em">This is why, in many cases, WebAssembly will outperform JavaScript when doing the
+            same task.</p>
+        </section>
+      </section>
+    </div>
+  </div>
+
+  <script src="js/reveal.js"></script>
+
+  <script>
+    // More info about config & dependencies:
+    // - https://github.com/hakimel/reveal.js#configuration
+    // - https://github.com/hakimel/reveal.js#dependencies
+    Reveal.initialize({
+      dependencies: [
+        { src: 'plugin/markdown/marked.js' },
+        { src: 'plugin/markdown/markdown.js' },
+        { src: 'plugin/notes/notes.js', async: true },
+        { src: 'plugin/highlight/highlight.js', async: true }
+      ]
+    });
+  </script>
+</body>
+
 </html>
